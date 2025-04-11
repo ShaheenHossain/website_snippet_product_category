@@ -180,7 +180,59 @@
 
 
 
+/* Add these styles to your existing SCSS */
 
+.product-item {
+    .card {
+        transition: all 0.3s ease;
+
+        .variant-toggle {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+
+            i {
+                transition: transform 0.3s ease;
+            }
+
+            &[aria-expanded="true"] i {
+                transform: rotate(180deg);
+            }
+        }
+
+        .variant-options {
+            max-height: 200px;
+            overflow-y: auto;
+
+            .variant-item {
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.05);
+                }
+
+                .variant-name {
+                    font-size: 0.85rem;
+                }
+
+                .variant-price {
+                    color: $primary;
+                    font-size: 0.85rem;
+                }
+            }
+        }
+    }
+}
+
+/* Ensure consistent card heights */
+.card-body {
+    min-height: 150px; /* Adjust as needed */
+    display: flex;
+    flex-direction: column;
+
+    .price-display {
+        flex-grow: 1;
+        display: flex;
+        align-items: flex-end;
+    }
+}
 
 
 

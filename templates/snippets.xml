@@ -3,7 +3,7 @@
 
     <template id="snippets" inherit_id="website.snippets">
         <xpath expr="//div[@id='snippet_feature']//div[hasclass('o_panel_body')]"
-                position="inside"
+               position="inside"
         >
             <t
                     t-snippet="website_snippet_product_category.s_product_category"
@@ -12,16 +12,16 @@
         </xpath>
     </template>
 
-<!--    <template id="s_product_category" name="Product Category">
-        <section class="s_product_category py-4">
-            <div class="row">
-                &lt;!&ndash; Left Side: Categories &ndash;&gt;
-                <div class="js_product_category col-12 col-md-3"></div>
-                &lt;!&ndash; Right Side: Products &ndash;&gt;
-                <div class="js_product_display col-12 col-md-9"></div>
-            </div>
-        </section>
-    </template>-->
+    <!--    <template id="s_product_category" name="Product Category">
+            <section class="s_product_category py-4">
+                <div class="row">
+                    &lt;!&ndash; Left Side: Categories &ndash;&gt;
+                    <div class="js_product_category col-12 col-md-3"></div>
+                    &lt;!&ndash; Right Side: Products &ndash;&gt;
+                    <div class="js_product_display col-12 col-md-9"></div>
+                </div>
+            </section>
+        </template>-->
 
     <template id="s_product_category" name="Product Category">
         <section class="s_product_category">
@@ -34,11 +34,11 @@
                 </div>
 
 
-<!--                <div class="js_product_category col-12 col-md-4 col-lg-3 ms-lg-5">
-                    <a href="#" class="categ_link">Category 1</a>
-                    <a href="#" class="categ_link">Category 2</a>
-                </div>
-                -->
+                <!--                <div class="js_product_category col-12 col-md-4 col-lg-3 ms-lg-5">
+                                    <a href="#" class="categ_link">Category 1</a>
+                                    <a href="#" class="categ_link">Category 2</a>
+                                </div>
+                                -->
                 <div class="js_product_display col-12 col-md-4 col-lg-3">
                     <!-- Products will be displayed here -->
                 </div>
@@ -117,333 +117,67 @@
         </div>
     </template>
 
-
-    <!-- perfectly work with product name and variant with price -->
-<!--
-<template id="s_product_list" name="Product List">
-    <div class="container o_not_editable">
-        <div class="row">
-            <t t-foreach="products" t-as="product">
-                <div class="col-12 col-md-5 col-lg-2 product-item">
-                    <div class="card">
-                        <img
-                            t-if="product.image_1920"
-                            t-att-src="image_data_uri(product.image_1920)"
-                            class="card-img-top"
-                            style="height: 120px; object-fit: contain;"
-                            alt="Product Image"
-                        />
-                        <div class="card-body">
-                            <h5 class="card-title" t-field="product.name"/>
-                            <p class="card-text">
-                                <span t-field="product.list_price"/>
-                                <t t-if="len(product.product_variant_ids) > 1">
-                                    <small class="text-muted d-block">
-                                        <t t-foreach="product.product_variant_ids" t-as="variant">
-                                            <t t-if="variant.price_extra > 0">
-                                                <br/><t t-esc="variant.display_name"/>:
-                                                <t t-esc="variant.lst_price"/>
-                                            </t>
-                                        </t>
-                                    </small>
-                                </t>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </t>
-        </div>
-    </div>
-</template>
--->
-
-
-<!--
     <template id="s_product_list" name="Product List">
-    <div class="container o_not_editable">
-        <div class="row">
-            <t t-foreach="products" t-as="product">
-                <div class="col-12 col-md-5 col-lg-2 product-item">
-                    <div class="card">
-                        <img
-                            t-if="product.image_1920"
-                            t-att-src="image_data_uri(product.image_1920)"
-                            class="card-img-top"
-                            style="height: 120px; object-fit: contain;"
-                            alt="Product Image"
-                        />
-                        <div class="card-body">
-                            <h5 class="card-title" t-field="product.name"/>
-                            <p class="card-text">
-                                <span t-field="product.list_price"/> <t t-esc="product.currency_id.name"/>
+        <div class="container o_not_editable">
+            <div class="row">
+                <t t-foreach="products" t-as="product">
+                    <div class="col-12 col-md-4 col-lg-3 product-item mb-4">
+                        <div class="card h-100">
+                            <img t-if="product.image_1920"
+                                 t-att-src="image_data_uri(product.image_1920)"
+                                 class="card-img-top"
+                                 style="height: 140px; object-fit: contain;"
+                                 alt="Product Image"/>
 
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title" t-field="product.name"/>
 
-                                &lt;!&ndash;
-                                <t t-if="len(product.product_variant_ids) > 1">
-                                    <small class="text-muted d-block variant-prices">
-                                        <t t-foreach="product.product_variant_ids" t-as="variant">
-                                            <t t-if="variant.price_extra > 0">
-                                                <div class="variant-item">
-                                                    &lt;!&ndash; Show only variant attributes without product name &ndash;&gt;
-                                                    <t t-set="variant_name" t-value="variant.display_name.replace(product.name, '').strip()"/>
-                                                    <t t-esc="variant_name"/>:
-                                                    <t t-esc="variant.lst_price"/>
-                                                </div>
-                                            </t>
-                                        </t>
-                                    </small>
-                                </t>&ndash;&gt;
+                                <div class="mt-auto">
+                                    <t t-set="product_variants" t-value="variants_by_product.get(product.id, [])"/>
+                                    <t t-set="has_variants" t-value="len(product_variants) > 1"/>
 
-                                <t t-if="len(product.product_variant_ids) > 1">
-                                    <small class="text-muted d-block variant-prices">
-                                        <t t-foreach="product.product_variant_ids" t-as="variant">
-                                            <t t-if="variant.price_extra > 0">
-                                                <div class="variant-item">
-                                                    &lt;!&ndash; Show only variant attributes without product name  &ndash;&gt;
+                                    <!-- Main Price Display -->
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="text-dark fw-bold fs-6 price-display">
+                                            <t t-esc="product.list_price or (product_variants[0].lst_price if product_variants else 0)"/>
+                                            <t t-esc="product.currency_id.name"/>
+                                        </span>
 
-                                                    <t t-set="variant_name" t-value="variant.display_name.replace(product.name, '').strip()"/>
-                                                    <t t-esc="variant_name"/>:
-                                                    <t t-esc="variant.lst_price"/><t t-esc="product.currency_id.name"/>
-                                                </div>
-                                            </t>
-                                        </t>
-                                    </small>
-                                </t>
-
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </t>
-        </div>
-    </div>
-</template>
--->
-
-<template id="s_product_list" name="Product List">
-    <div class="container o_not_editable">
-        <div class="row">
-            <t t-foreach="products" t-as="product">
-<!--                <div class="col-12 col-md-4 col-lg-3 product-item">-->
-                    <div class="col-12 col-md-4 col-lg-3 product-item" t-att-data-categories="','.join([str(cat.id) for cat in product.public_categ_ids])">
-                    <div class="card">
-                        <img
-                            t-if="product.image_1920"
-                            t-att-src="image_data_uri(product.image_1920)"
-                            class="card-img-top"
-                            style="height: 140px; object-fit: contain;"
-                            alt="Product Image"
-                        />
-                        <div class="card-body">
-                            <h5 class="card-title" t-field="product.name"/>
-                            <p class="card-text">
-
-                                <!-- Handle price fallback: use variant price if list_price is 0 -->
-                                <t t-set="main_price" t-value="product.list_price"/>
-                                <t t-if="main_price == 0.0 and product.product_variant_ids">
-                                    <t t-set="main_price" t-value="product.product_variant_ids[0].lst_price"/>
-                                </t>
-
-                                <span class="text-dark fw-bold fs-6" t-esc="main_price"/> <span class="text-dark fw-bold fs-6" t-esc="product.currency_id.name"/>
-
-<!--                                <t t-if="len(product.product_variant_ids) > 1">
-                                    <small class="text-muted d-block variant-prices">
-                                        <t t-foreach="product.product_variant_ids" t-as="variant">
-                                            <t t-if="variant.price_extra > 0">
-                                                <div class="variant-item">
-                                                    <t t-set="variant_name" t-value="variant.display_name.replace(product.name, '').strip()"/>
-                                                    <t t-esc="variant_name"/>:
-                                                    <t t-esc="variant.lst_price"/> <t t-esc="product.currency_id.name"/>
-                                                </div>
-                                            </t>
-                                        </t>
-                                    </small>
-                                </t>-->
-
-                                <t t-if="len(product.product_variant_ids) > 1">
-                                    <div class="d-block variant-prices">
-                                        <t t-foreach="product.product_variant_ids" t-as="variant">
-                                            <t t-if="variant.price_extra > 0">
-                                                <div class="variant-item">
-                                                    <span class="text-muted small">
-                                                        <t t-set="variant_name" t-value="variant.display_name.replace(product.name, '').strip()"/>
-                                                        <t t-esc="variant_name"/>:
-                                                        <t t-esc="variant.lst_price"/> <t t-esc="product.currency_id.name"/>
-                                                    </span>
-                                                </div>
-                                            </t>
+                                        <t t-if="has_variants">
+                                            <button class="btn btn-sm btn-outline-secondary variant-toggle"
+                                                    type="button">
+                                                <i class="fa fa-chevron-down"></i>
+                                            </button>
                                         </t>
                                     </div>
-                                </t>
 
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </t>
-        </div>
-    </div>
-</template>
-
-
-<!--<template id="s_product_list" name="Product List">
-    <div class="container o_not_editable">
-        <div class="row">
-            <t t-foreach="products" t-as="product">
-                <t t-set="unique_id" t-value="'product_' + str(product.id)"/>
-                <div class="col-12 col-md-5 col-lg-2 product-item">
-                    <div class="card">
-                        <img
-                            t-if="product.image_1920"
-                            t-att-src="image_data_uri(product.image_1920)"
-                            class="card-img-top"
-                            style="height: 120px; object-fit: contain;"
-                            alt="Product Image"
-                        />
-                        <div class="card-body">
-                            <h5 class="card-title" t-field="product.name"/>
-
-                            &lt;!&ndash; Main price display &ndash;&gt;
-                            <p class="card-text">
-                                <strong>Price:</strong>
-                                <span t-att-id="unique_id + '_main_price'">
-                                    <t t-set="main_price" t-value="product.list_price"/>
-                                    <t t-if="main_price == 0.0 and product.product_variant_ids">
-                                        <t t-set="main_price" t-value="product.product_variant_ids[0].lst_price"/>
-                                    </t>
-                                    <t t-esc="main_price"/> <t t-esc="product.currency_id.name"/>
-                                </span>
-                            </p>
-
-                            &lt;!&ndash; Variant options &ndash;&gt;
-                            <t t-if="len(product.product_variant_ids) > 1">
-                                <div class="variant-options">
-                                    <t t-foreach="product.product_variant_ids" t-as="variant" t-foreach-index="i">
-                                        <div class="form-check mb-1">
-                                            <input class="form-check-input update-price-radio"
-                                                type="radio"
-                                                t-att-name="unique_id + '_variant_option'"
-                                                t-att-id="unique_id + '_radio_' + str(i)"
-                                                t-att-value="variant.lst_price"
-                                                t-att-data-currency="product.currency_id.name"
-                                                t-att-data-target="unique_id + '_main_price'"
-                                                t-att-checked="i == 0 and 'checked' or None"
-                                            />
-                                            <label class="form-check-label" t-att-for="unique_id + '_radio_' + str(i)">
-                                                <t t-set="variant_name" t-value="variant.display_name.replace(product.name, '').strip()"/>
-                                                <t t-esc="variant_name"/>:
-                                                <t t-esc="variant.lst_price"/> <t t-esc="product.currency_id.name"/>
-                                            </label>
+                                    <!-- Variants Dropdown -->
+                                    <t t-if="has_variants">
+                                        <div class="variant-options" style="display: none;">
+                                            <t t-foreach="product_variants" t-as="variant">
+                                                <div class="variant-item p-2 border-top"
+                                                     t-att-data-variant-id="variant.id">
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="variant-name">
+                                                            (<t t-esc="', '.join(variant.attribute_values)"/>)
+                                                        </span>
+                                                        <span class="variant-price fw-bold">
+                                                            <t t-esc="variant.lst_price"/>
+                                                            <t t-esc="product.currency_id.name"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </t>
                                         </div>
                                     </t>
                                 </div>
-                            </t>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </t>
+                </t>
+            </div>
         </div>
-    </div>
-
-    &lt;!&ndash; JS for radio behavior &ndash;&gt;
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll('.update-price-radio').forEach(function (radio) {
-                radio.addEventListener('change', function () {
-                    const price = this.value;
-                    const currency = this.dataset.currency;
-                    const target = document.getElementById(this.dataset.target);
-                    if (target) {
-                        target.innerText = `${price} ${currency}`;
-                    }
-                });
-            });
-        });
-    </script>
-</template>-->
-
-<!--
-
-    <template id="s_product_list" name="Product List">
-    <div class="container o_not_editable">
-        <div class="row">
-            <t t-foreach="products" t-as="product">
-                <t t-set="unique_id" t-value="'product_' + str(product.id)"/>
-                <div class="col-12 col-md-5 col-lg-2 product-item">
-                    <div class="card">
-                        <img
-                            t-if="product.image_1920"
-                            t-att-src="image_data_uri(product.image_1920)"
-                            class="card-img-top"
-                            style="height: 120px; object-fit: contain;"
-                            alt="Product Image"
-                        />
-                        <div class="card-body">
-                            <h5 class="card-title" t-field="product.name"/>
-
-                            &lt;!&ndash; Price block &ndash;&gt;
-                            <p class="card-text">
-                                <strong>Price:</strong>
-                                <span t-att-id="unique_id + '_main_price'">
-                                    <t t-set="main_price" t-value="product.list_price"/>
-                                    <t t-if="main_price == 0.0 and product.product_variant_ids">
-                                        <t t-set="main_price" t-value="product.product_variant_ids[0].lst_price"/>
-                                    </t>
-                                    <t t-esc="main_price"/> <t t-esc="product.currency_id.name"/>
-                                </span>
-                            </p>
-
-                            &lt;!&ndash; Variant radios &ndash;&gt;
-                            <t t-if="len(product.product_variant_ids) > 1">
-                                <div class="variant-options">
-                                    <t t-foreach="product.product_variant_ids" t-as="variant" t-foreach-index="i">
-                                        <div class="form-check mb-1">
-                                            <input class="form-check-input update-price-radio"
-                                                type="radio"
-                                                t-att-name="unique_id + '_variant_option'"
-                                                t-att-id="unique_id + '_radio_' + str(i)"
-                                                t-att-value="variant.lst_price"
-                                                t-att-data-currency="product.currency_id.name"
-                                                t-att-data-target="unique_id + '_main_price'"
-                                            />
-                                            <label class="form-check-label" t-att-for="unique_id + '_radio_' + str(i)">
-                                                <t t-set="variant_name" t-value="variant.display_name.replace(product.name, '').strip()"/>
-                                                <t t-esc="variant_name"/>:
-                                                <t t-esc="variant.lst_price"/> <t t-esc="product.currency_id.name"/>
-                                            </label>
-                                        </div>
-                                    </t>
-                                </div>
-                            </t>
-                        </div>
-                    </div>
-                </div>
-            </t>
-        </div>
-    </div>
-
-    &lt;!&ndash; Script to handle radio clicks &ndash;&gt;
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll('.update-price-radio').forEach(function (radio) {
-                radio.addEventListener('change', function () {
-                    const targetId = this.dataset.target;
-                    const target = document.getElementById(targetId);
-                    const currency = this.dataset.currency;
-                    const price = this.value;
-
-                    if (target) {
-                        target.innerText = `${price} ${currency}`;
-                    } else {
-                        console.warn('Price target not found for ID:', targetId);
-                    }
-                });
-            });
-        });
-    </script>
-</template>
--->
-
+    </template>
 
 
 </odoo>

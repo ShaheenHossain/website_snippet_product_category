@@ -23,6 +23,7 @@ class Website(http.Controller):
             "keep": keep
         })
 
+
     @http.route(
         ["/website_sale/get_products"],
         type="json",
@@ -35,23 +36,35 @@ class Website(http.Controller):
             domain = [('website_published', '=', True)]
 
             if int(category_id) != 0:
-                # Get selected category and its descendants
                 category = request.env['product.public.category'].browse(int(category_id))
                 all_category_ids = category.search([('id', 'child_of', category.id)]).ids
                 domain.append(('public_categ_ids', 'in', all_category_ids))
 
-            products = request.env['product.template'].sudo().search(domain)
+            # Get products with their variants in a single query
+            products = request.env['product.template'].with_context(
+                active_test=False
+            ).search(domain)
 
-            # Fetch active variants grouped by product
-            variants = request.env['product.product'].sudo().search([
+            # Prefetch variants data to optimize performance
+            products.read(['name', 'list_price', 'image_1920', 'currency_id'])
+
+            # Get all variants for these products
+            variants = request.env['product.product'].search([
                 ('product_tmpl_id', 'in', products.ids),
                 ('active', '=', True),
             ])
 
             variants_by_product = {}
             for variant in variants:
-                tmpl_id = variant.product_tmpl_id.id
-                variants_by_product.setdefault(tmpl_id, []).append(variant)
+                if variant.product_tmpl_id.id not in variants_by_product:
+                    variants_by_product[variant.product_tmpl_id.id] = []
+                variants_by_product[variant.product_tmpl_id.id].append({
+                    'id': variant.id,
+                    'display_name': variant.display_name,
+                    'lst_price': variant.lst_price,
+                    'price_extra': variant.price_extra,
+                    'attribute_values': variant.product_template_attribute_value_ids.mapped('name')
+                })
 
             return request.env['ir.qweb']._render(
                 'website_snippet_product_category.s_product_list', {
@@ -60,7 +73,9 @@ class Website(http.Controller):
                 }
             )
         except Exception as e:
+            error_msg = _("Error loading products: %s") % str(e)
             return {
-                "error": str(e),
-                "traceback": traceback.format_exc()
+                "error": error_msg,
+                "products": [],
+                "variants_by_product": {}
             }
