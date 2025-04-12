@@ -22,8 +22,8 @@
     }
 
     .js_product_display {
-        flex: 0 0 65%; /* Right side takes 70% width */
-        max-width: 65%;
+        flex: 0 0 60%; /* Right side takes 70% width */
+        max-width: 60%;
         padding-left: 0px; /* Add some spacing between categories and products */
 
         @media (min-width: 992px) {
@@ -53,6 +53,17 @@
 
 
     }
+
+//
+// .categ_link {
+//     width: 100%;
+//     text-align: left;
+//     margin: 0;
+//     padding-left: 12px;
+//     padding-right: 12px;
+//     box-sizing: border-box;
+// }
+
 
 
     /* Hover Effect */
