@@ -171,6 +171,7 @@
                                     <div class="form-group mt-2">
 <!--                                        <label for="variant_select" class="form-label small text-muted">Choose Variant</label>-->
 
+<!--
                                         <select class="form-select variant-select" t-att-data-product-id="product.id">
                                             <t t-foreach="product.product_variant_ids" t-as="variant">
                                                 <option
@@ -179,13 +180,24 @@
                                                 >
                                                     <t t-set="variant_name" t-value="variant.display_name.replace(product.name, '').strip()"/>
                                                     <t t-esc="variant_name"/>
-<!--                                                    - <t t-esc="variant.lst_price"/> <t t-esc="product.currency_id.name"/>-->
+&lt;!&ndash;                                                    - <t t-esc="variant.lst_price"/> <t t-esc="product.currency_id.name"/>&ndash;&gt;
                                                 </option>
                                             </t>
                                         </select>
+-->
 
 
-
+<select class="form-select variant-select" t-att-data-product-id="product.id">
+    <t t-foreach="product.product_variant_ids" t-as="variant">
+        <option
+            t-att-value="variant.id"
+            t-att-data-price="variant.lst_price"
+        >
+            <t t-set="variant_attrs" t-value="' / '.join([v.name for v in variant.product_template_attribute_value_ids.mapped('product_attribute_value_id')])"/>
+            <t t-esc="variant_attrs or product.name"/>
+        </option>
+    </t>
+</select>
 
 
                                     </div>
