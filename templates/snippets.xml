@@ -110,8 +110,8 @@
                     <div class="col-12 col-md-4 col-lg-3 product-item" t-att-data-categories="','.join([str(cat.id) for cat in product.public_categ_ids])">
                     <div class="card">
                         <img
-                            t-if="product.image_1920"
-                            t-att-src="image_data_uri(product.image_1920)"
+                            t-if="product.image_256"
+                            t-att-src="image_data_uri(product.image_256)"
                             class="card-img-top"
                             style="height: 140px; object-fit: contain;"
                             alt="Product Image"
