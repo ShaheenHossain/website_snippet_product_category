@@ -1,0 +1,220 @@
+.s_product_category {
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .js_product_category {
+        flex: 0 0 35%; /* Left side takes 30% width */
+        max-width: 35%;
+        overflow-y: auto; /* Add scroll if content overflows */
+        font-size: 1em;
+        margin-bottom: 10px;
+        padding-top: 10px;
+
+         /* Add left padding only for desktop */
+        @media (min-width: 992px) {
+            padding-left: 120px;
+        }
+
+
+
+    }
+
+    .js_product_display {
+        flex: 0 0 65%; /* Right side takes 70% width */
+        max-width: 65%;
+        padding-left: 0px; /* Add some spacing between categories and products */
+
+        @media (min-width: 992px) {
+            padding-right: 50px;
+        }
+    }
+
+    .categ_link {
+        cursor: pointer; /* Indicate that categories are clickable */
+        padding: 6px 12px; /* Reduce padding to make buttons smaller */
+        display: flex; /* Use flexbox to align handler and text */
+        align-items: center; /* Center handler and text vertically */
+        justify-content: center; /* Center handler and text horizontally */
+        text-decoration: none; /* Remove underline from links */
+        color: #333; /* Set a visible font color (e.g., dark gray) */
+        margin-bottom: 10px; /* Add spacing between category links */
+        background-color: #f0f0f0; /* Add background color to make it look like a button */
+        border-radius: 5px; /* Add rounded corners */
+        white-space: nowrap; /* Prevent text from wrapping */
+        overflow: hidden; /* Hide overflow text */
+        text-overflow: ellipsis; /* Add ellipsis for overflow text */
+        width: 100%; /* Ensure all buttons have the same width */
+        box-sizing: border-box; /* Include padding and border in the element's total width */
+        min-width: 100px; /* Reduce minimum width for buttons */
+        font-size: 0.9em; /* Slightly reduce font size */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover/active effects */
+
+
+    }
+
+
+    /* Hover Effect */
+    .categ_link:hover {
+        background-color: #d0d0d0; /* Darker background on hover */
+        color: #000; /* Darker text on hover */
+    }
+
+    /* Active (Clicked) Effect */
+    .categ_link:active,
+    .categ_link.active { /* Add .active class for clicked state */
+        background-color: #007bff; /* Blue background for clicked button */
+        color: #fff; /* White text for clicked button */
+    }
+
+    .product-item {
+        margin-bottom: 20px;
+        .card {
+            height: 100%;
+            .card-img-top {
+                height: 70px;
+                object-fit: cover;
+            }
+            .card-body {
+                padding: 10px;
+                .card-title {
+                    font-size: 1em;
+                    margin-bottom: 15px;
+                }
+                .card-text {
+                    font-size: 1em;
+                    color: $primary;
+                }
+            }
+        }
+    }
+}
+
+
+.variant-price {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.variant-item {
+    border-top: 1px solid #eee;
+    padding-top: 5px;
+    margin-top: 5px;
+}
+
+
+.variant-options {
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.variant-option {
+    margin-bottom: 8px;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: #f5f5f5;
+    }
+
+    .form-check-label {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .variant-price {
+        font-weight: bold;
+        color: $primary;
+    }
+}
+
+.selected-price {
+    color: $primary;
+    min-height: 1.5em; // Prevent layout shift when price changes
+}
+
+.variant-item {
+    padding: 5px 0;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+
+    &.active {
+        background-color: rgba(0, 123, 255, 0.1);
+    }
+
+    .form-check-input {
+        margin-right: 8px;
+        margin-top: 0;
+    }
+
+    .form-check-label {
+        flex-grow: 1;
+    }
+}
+
+.main-price-display {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: $primary;
+}
+
+@media (max-width: 767.98px) {
+    .js_product_category {
+        max-width: 100%;
+        margin-bottom: 20px;
+        text-align: left; /* Ensure buttons are left-aligned */
+
+    }
+    .js_product_display {
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .js_product_category {
+        max-width: 35%;
+        padding-left: 0;
+    }
+    .js_product_display {
+        max-width: 65%;
+    }
+}
+
+
+
+.js_product_category {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+
+    @media (min-width: 992px) {
+        padding-left: 120px; /* restore the original desktop spacing */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

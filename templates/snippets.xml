@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <template id="snippets" inherit_id="website.snippets">
+        <xpath expr="//div[@id='snippet_feature']//div[hasclass('o_panel_body')]"
+                position="inside"
+        >
+            <t
+                    t-snippet="website_snippet_product_category.s_product_category"
+                    t-thumbnail="/website_snippet_product_category/static/src/img/s_product_category.png"
+            />
+        </xpath>
+    </template>
+
+
+    <template id="s_product_category" name="Product Category">
+        <section class="s_product_category">
+            <div class="row">
+
+                <div class="js_product_category col-12 col-md-4 col-lg-3 ms-lg-5">
+                    <a href="#" class="categ_link active" data-category-id="0">All Products</a>
+                    <a href="#" class="categ_link" data-category-id="1">Category 1</a>
+                    <a href="#" class="categ_link" data-category-id="2">Category 2</a>
+                </div>
+
+
+                <div class="js_product_display col-12 col-md-4 col-lg-3">
+                    <!-- Products will be displayed here -->
+                </div>
+            </div>
+        </section>
+    </template>
+
+
+
+    <template id="s_product_category_items_recursive">
+        <t
+                t-foreach="categories"
+                t-as="category"
+                t-if="categories and cur_level &lt;= 4"
+        >
+            <div
+                    t-attf-class="categ_tree_level {{'pb-2 main_tree_level text-primary text-uppercase' if cur_level == 1 else ''}} {{cur_level &gt; 2 and 'ps-'+str(min((cur_level-2)*2, 5))}}"
+                    t-att-data-tree-level="cur_level"
+                    t-if="category.published_in_product_category_snippet"
+            >
+                <div class="d-flex d-flex-row">
+                    <div
+                            t-if="category.image_128"
+                            t-field="category.image_128"
+                            class="categ_img pe-1"
+                            t-options="{'widget': 'image','resize': '24x24' }"
+                    />
+
+                    <a
+                            t-att-href="keep('/shop/category/' + slug(category), category=0)"
+                            class="categ_link w-100"
+                            t-field="category.name"
+                            t-att-title="category.name"
+                            t-att-data-category-id="category.id"
+                    />
+                </div>
+            </div>
+            <t
+                    t-call="website_snippet_product_category.s_product_category_items_recursive"
+            >
+                <t t-set="categories" t-value="category.child_id" />
+                <t t-set="cur_level" t-value="cur_level+1" />
+            </t>
+        </t>
+    </template>
+
+
+
+
+
+    <template id="s_product_category_items">
+        <div class="container o_not_editable">
+            <div class="row">
+                <input
+                        type="hidden"
+                        name="object_count"
+                        t-if="object"
+                        t-att-value="len(object)"
+                />
+                <div
+                        t-foreach="object"
+                        t-as="categories"
+                        class="p-2 col-12 col-md-3 col-lg-2 categ_container"
+                >
+                    <div class="categ_scroll_wrapper px-2 h-120">
+                        <div class="categ_scroll">
+                            <t
+                                    t-call="website_snippet_product_category.s_product_category_items_recursive"
+                            >
+                                <t t-set="cur_level" t-value="1" />
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+<template id="s_product_list" name="Product List">
+    <div class="container o_not_editable">
+        <div class="row">
+            <t t-foreach="products" t-as="product">
+                    <div class="col-12 col-md-4 col-lg-3 product-item" t-att-data-categories="','.join([str(cat.id) for cat in product.public_categ_ids])">
+                    <div class="card">
+                        <img
+                            t-if="product.image_1920"
+                            t-att-src="image_data_uri(product.image_1920)"
+                            class="card-img-top"
+                            style="height: 140px; object-fit: contain;"
+                            alt="Product Image"
+                        />
+                        <div class="card-body">
+                            <h5 class="card-title" t-field="product.name"/>
+                            <p class="card-text">
+
+                                <!-- Handle price fallback: use variant price if list_price is 0 -->
+<!--
+                                <t t-set="main_price" t-value="product.list_price"/>
+                                <t t-if="main_price == 0.0 and product.product_variant_ids">
+                                    <t t-set="main_price" t-value="product.product_variant_ids[0].lst_price"/>
+                                </t>
+-->
+                                <t t-set="main_price" t-value="product.product_variant_ids[0].lst_price if product.product_variant_ids else product.list_price"/>
+
+<!--                                <span class="text-dark fw-bold fs-6" t-esc="main_price"/> <span class="text-dark fw-bold fs-6" t-esc="product.currency_id.name"/>-->
+
+<!--
+                                <span class="text-dark fw-bold fs-6 main-price" t-att-id="'main_price_' + str(product.id)">
+                                    <t t-esc="main_price"/>
+                                </span>
+                                <span class="text-dark fw-bold fs-6 currency-symbol">
+                                    <t t-esc="product.currency_id.name"/>
+                                </span>
+
+
+-->
+                                <span class="text-dark fw-bold fs-6 main-price" t-att-id="'main_price_' + str(product.id)">
+                                    <t t-esc="'{:.2f}'.format(main_price)"/>
+                                </span>
+                                <span class="text-dark fw-bold fs-6 currency-symbol ms-1">
+                                    <t t-esc="product.currency_id.symbol or product.currency_id.name"/>
+                                </span>
+
+
+
+
+<!--                                <t t-if="len(product.product_variant_ids) > 1">
+                                    <div class="d-block variant-prices">
+                                        <t t-foreach="product.product_variant_ids" t-as="variant">
+                                            <t t-if="variant.price_extra > 0">
+                                                <div class="variant-item">
+                                                    <span class="text-muted small">
+                                                        <t t-set="variant_name" t-value="variant.display_name.replace(product.name, '').strip()"/>
+                                                        <t t-esc="variant_name"/>:
+                                                        <t t-esc="variant.lst_price"/> <t t-esc="product.currency_id.name"/>
+                                                    </span>
+                                                </div>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </t>-->
+
+                                <t t-if="len(product.product_variant_ids) > 1">
+                                    <div class="form-group mt-2">
+<!--                                        <label for="variant_select" class="form-label small text-muted">Choose Variant</label>-->
+
+                                        <select class="form-select variant-select" t-att-data-product-id="product.id">
+                                            <t t-foreach="product.product_variant_ids" t-as="variant">
+                                                <option
+                                                        t-att-value="variant.id"
+                                                        t-att-data-price="variant.lst_price"
+                                                >
+                                                    <t t-set="variant_name" t-value="variant.display_name.replace(product.name, '').strip()"/>
+                                                    <t t-esc="variant_name"/>
+<!--                                                    - <t t-esc="variant.lst_price"/> <t t-esc="product.currency_id.name"/>-->
+                                                </option>
+                                            </t>
+                                        </select>
+
+
+
+
+
+                                    </div>
+                                </t>
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </div>
+</template>
+
+
+
+
+
+</odoo>
