@@ -121,26 +121,8 @@
                             <p class="card-text">
 
                                 <!-- Handle price fallback: use variant price if list_price is 0 -->
-<!--
-                                <t t-set="main_price" t-value="product.list_price"/>
-                                <t t-if="main_price == 0.0 and product.product_variant_ids">
-                                    <t t-set="main_price" t-value="product.product_variant_ids[0].lst_price"/>
-                                </t>
--->
                                 <t t-set="main_price" t-value="product.product_variant_ids[0].lst_price if product.product_variant_ids else product.list_price"/>
 
-<!--                                <span class="text-dark fw-bold fs-6" t-esc="main_price"/> <span class="text-dark fw-bold fs-6" t-esc="product.currency_id.name"/>-->
-
-<!--
-                                <span class="text-dark fw-bold fs-6 main-price" t-att-id="'main_price_' + str(product.id)">
-                                    <t t-esc="main_price"/>
-                                </span>
-                                <span class="text-dark fw-bold fs-6 currency-symbol">
-                                    <t t-esc="product.currency_id.name"/>
-                                </span>
-
-
--->
                                 <span class="text-dark fw-bold fs-6 main-price" t-att-id="'main_price_' + str(product.id)">
                                     <t t-esc="'{:.2f}'.format(main_price)"/>
                                 </span>
@@ -149,55 +131,23 @@
                                 </span>
 
 
-
-
-<!--                                <t t-if="len(product.product_variant_ids) > 1">
-                                    <div class="d-block variant-prices">
-                                        <t t-foreach="product.product_variant_ids" t-as="variant">
-                                            <t t-if="variant.price_extra > 0">
-                                                <div class="variant-item">
-                                                    <span class="text-muted small">
-                                                        <t t-set="variant_name" t-value="variant.display_name.replace(product.name, '').strip()"/>
-                                                        <t t-esc="variant_name"/>:
-                                                        <t t-esc="variant.lst_price"/> <t t-esc="product.currency_id.name"/>
-                                                    </span>
-                                                </div>
-                                            </t>
-                                        </t>
-                                    </div>
-                                </t>-->
-
                                 <t t-if="len(product.product_variant_ids) > 1">
                                     <div class="form-group mt-2">
 <!--                                        <label for="variant_select" class="form-label small text-muted">Choose Variant</label>-->
 
-<!--
+
+
                                         <select class="form-select variant-select" t-att-data-product-id="product.id">
                                             <t t-foreach="product.product_variant_ids" t-as="variant">
                                                 <option
                                                         t-att-value="variant.id"
                                                         t-att-data-price="variant.lst_price"
                                                 >
-                                                    <t t-set="variant_name" t-value="variant.display_name.replace(product.name, '').strip()"/>
-                                                    <t t-esc="variant_name"/>
-&lt;!&ndash;                                                    - <t t-esc="variant.lst_price"/> <t t-esc="product.currency_id.name"/>&ndash;&gt;
+                                                    <t t-set="variant_attrs" t-value="' / '.join([v.name for v in variant.product_template_attribute_value_ids.mapped('product_attribute_value_id')])"/>
+                                                    <t t-esc="variant_attrs or product.name"/>
                                                 </option>
                                             </t>
                                         </select>
--->
-
-
-<select class="form-select variant-select" t-att-data-product-id="product.id">
-    <t t-foreach="product.product_variant_ids" t-as="variant">
-        <option
-            t-att-value="variant.id"
-            t-att-data-price="variant.lst_price"
-        >
-            <t t-set="variant_attrs" t-value="' / '.join([v.name for v in variant.product_template_attribute_value_ids.mapped('product_attribute_value_id')])"/>
-            <t t-esc="variant_attrs or product.name"/>
-        </option>
-    </t>
-</select>
 
 
                                     </div>

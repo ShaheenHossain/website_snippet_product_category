@@ -82,7 +82,8 @@ sAnimation.registry.js_product_category = sAnimation.Class.extend({
                         const priceEl = productCard.querySelector("#main_price_" + productId);
 
                         if (priceEl && newPrice) {
-                            priceEl.textContent = newPrice;
+                            const formattedPrice = parseFloat(newPrice).toFixed(2);
+                            priceEl.textContent = formattedPrice;
                         }
                     });
                 }).catch(function (error) {
